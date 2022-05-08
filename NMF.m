@@ -23,8 +23,9 @@ errVec = zeros(loop, 1);
 switch div
     case "Eu"
         for i = 1:loop
-            wMat = wMat .* ((xMat * hMat') ./ (wMat * (hMat * hMat')));
-            hMat = hMat .* ((wMat' * xMat) ./ ((wMat' * wMat) * hMat));
+            wMat = wMat .* ((xMat * hMat') ./ (yMat * hMat'));
+            yMat = wMat * hMat;
+            hMat = hMat .* ((wMat' * xMat) ./ (wMat' * yMat));
             yMat = wMat * hMat;
             errVec(i) = sum((xMat - yMat) .^ 2, "all");
         end

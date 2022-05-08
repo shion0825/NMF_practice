@@ -2,8 +2,8 @@ clear; close all; clc;
 
 % kLen : ランクK
 % en : 繰り返し回数N
-kLen = 16;
-en = 256;
+kLen = 32;
+en = 1024;
 F = DGTtool(windowShift=512, windowLength=2048, FFTnum=2048, windowName="Hann");
 
 % xVec : 入力信号x
@@ -16,7 +16,7 @@ xAbsMat = abs(xMat);
 xPhaseMat = angle(xMat);
 
 % KLで計算(Eu, ISも可)
-yMat = NMF(xAbsMat, kLen, en, "KL");
+yAbsMat = NMF(xAbsMat, kLen, en, "Eu");
+yMat = yAbsMat .* exp(1i * xPhaseMat);
 yVec = F.pinv(yMat);
-%yVec = 0.8 * yVec / max(yVec, [], "all");
 audiowrite("out/out.wav", yVec, fs);
